@@ -43,18 +43,39 @@ _.each(methods,
 RequestDatabase.prototype.del = RequestDatabase.prototype.delete
 RequestDatabase.prototype.request = RequestDatabase.prototype.get
 
+var props =
+  [ 'httpVersion'
+  , 'headers'
+  , 'trailers'
+  , 'method'
+  , 'statusCode'
+  , 'httpVersionMajor'
+  , 'httpVersionMinor'
+  ]
+
+function serializeResponse (resp) {
+  return _.pick.apply(_, [resp].concat(props))
+}
+
 RequestDatabase.prototype._request = function (opts) {
   var self = this
   if (opts.method !== 'GET') return request(opts)
   if (opts.url) {
     self.store.get(opts.url, function (e, data) {
-      if (e) {
+      if (e || data.e) {
         request.get(opts, function (e, resp, body) {
-          var data = { body: body, resp: JSON.parse(safeStringify(resp)), e:e }
-          self.store.put(opts.url, data)
-          opts.callback(data.e, data.resp, data.body)
+          data = { body: body, resp: serializeResponse(resp), e:e }
+          data.resp.fromCache = false
+          if (e || resp.statusCode === 403) {
+            opts.callback(data.e, data.resp, data.body)
+          } else {
+            self.store.put(opts.url, data, function (e) {
+              opts.callback(data.e, data.resp, data.body)
+            })
+          }
         })
       } else {
+        data.resp.fromCache = true
         opts.callback(data.e, data.resp, data.body)
       }
     })
