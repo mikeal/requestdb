@@ -1,6 +1,6 @@
 {
   "name": "requestdb",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A request wrapper that stores and retrieves responses from a leveldb cache.",
   "main": "index.js",
   "dependencies": {
