@@ -13,8 +13,8 @@
   "devDependencies": {
     "cleanup": "~0.3.0",
     "nock": "^0.51.0",
-    "okdone": "~0.3.0",
-    "rimraf": "~2.2.2"
+    "okdone": "^0.3.0",
+    "rimraf": "^2.2.8"
   },
   "scripts": {
     "test": "node test.js"
