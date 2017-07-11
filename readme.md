@@ -1,5 +1,7 @@
 # requestdb
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mikeal/requestdb.svg)](https://greenkeeper.io/)
+
 A wrapper for the [request](https://www.npmjs.org/package/request) module that
 stores and retrieves responses from a leveldb cache.
 
